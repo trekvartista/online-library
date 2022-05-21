@@ -1,9 +1,17 @@
 import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { publicRoutes } from "./routes";
 
 function App() {
     return (
         <div>
-            <span className="text-3xl font-bold underline">Hello world!</span>
+            <Navbar />
+            <Routes>
+                {publicRoutes.map(({ path, Component }) => 
+                    <Route key={path} path={path} element={<Component />} />
+                )}
+            </Routes>
         </div>
     );
 }
