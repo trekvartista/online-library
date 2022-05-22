@@ -24,7 +24,7 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
         "Utopia",
         "Biograpgy",
     ];
-    const filters = ["Alphabet", "Title", "Author"];
+    const filters = ["All", "Title", "Author"];
 
     const [searchText, setSearchText] = useState("");
     const [genre, setGenre] = useState("");
@@ -42,19 +42,40 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
         let newBooks;
 
         newBooks = books.filter((book) => {
-            return (
-                book.title.toLowerCase().includes(searchText.toLowerCase()) &&
-                book.genre.toLowerCase().includes(genre.toLowerCase())
-            );
+
+            let filter_condition;
+            let genre_condition;
+
+            if (filter === "Title") {
+                filter_condition = book.title.toLowerCase().includes(searchText.toLowerCase());
+            }
+            else if (filter === "Author") {
+                filter_condition = book.author.toLowerCase().includes(searchText.toLowerCase());
+            }
+            else {
+                filter_condition = 
+                        book.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                        book.author.toLowerCase().includes(searchText.toLowerCase());
+            }
+
+            genre_condition = book.genre.toLowerCase().includes(genre.toLowerCase())
+
+            return filter_condition && genre_condition;
         });
 
+        // Alphabetic Sort
+        newBooks.sort((a, b) => a.title.localeCompare(b.title));
+
+        // console.log(newBooks)
         setActiveBooks(newBooks);
     };
 
     const resetFilters = () => {
-        setSearchText("");
-        setGenre("");
-        setFilter("");
+        if (searchText || filter || genre) {
+            setSearchText("");
+            setGenre("");
+            setFilter("");
+        }
     };
 
     const handleSubmit = (e) => {
@@ -88,9 +109,9 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
             <div className="flex flex-row items-center gap-1 w-full sm:w-2/5">
                 <div className="w-1/2">
                     <FormControl fullWidth size="small">
-                        <InputLabel>Sort by</InputLabel>
+                        <InputLabel>Filters</InputLabel>
                         <Select
-                            label="Sort by"
+                            label="Filters"
                             value={filter}
                             onChange={(e) => handleFilterChange(e)}
                         >
