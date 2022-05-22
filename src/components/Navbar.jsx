@@ -11,8 +11,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { LIBRARY_ROUTE, ADMIN_ROUTE } from "../utils/consts";
+import { NavLink } from "react-router-dom";
 
-const pages = ["Orders", "Pricing", "Admin"];
+const pages = [
+    { id: 0, title: "Books", path: LIBRARY_ROUTE },
+    { id: 1, title: "Pricing", path: "/pricing" },
+    { id: 2, title: "Admin", path: ADMIN_ROUTE },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
@@ -81,13 +87,20 @@ const Navbar = () => {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
-                                >
+                            {pages.map((page, i) => (
+                                <MenuItem key={i} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
-                                        {page}
+                                        <NavLink
+                                            to={page.path}
+                                            end
+                                            className={(navData) =>
+                                                navData.isActive
+                                                    ? "font-bold"
+                                                    : ""
+                                            }
+                                        >
+                                            {page.title}
+                                        </NavLink>
                                     </Typography>
                                 </MenuItem>
                             ))}
@@ -110,13 +123,26 @@ const Navbar = () => {
                             display: { xs: "none", md: "flex" },
                         }}
                     >
-                        {pages.map((page) => (
+                        {pages.map((page, i) => (
                             <Button
-                                key={page}
+                                key={i}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, mx: 3, color: "black", display: "block" }}
+                                sx={{
+                                    my: 2,
+                                    mx: 3,
+                                    color: "black",
+                                    display: "block",
+                                }}
                             >
-                                {page}
+                                <NavLink
+                                    to={page.path}
+                                    end
+                                    className={(navData) =>
+                                        navData.isActive ? "font-bold" : ""
+                                    }
+                                >
+                                    {page.title}
+                                </NavLink>
                             </Button>
                         ))}
                     </Box>
