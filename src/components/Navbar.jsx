@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { LIBRARY_ROUTE, ADMIN_ROUTE } from "../utils/consts";
 import { NavLink } from "react-router-dom";
+import { AccountCircleOutlined } from "@mui/icons-material";
 
 const pages = [
     { id: 0, title: "Books", path: LIBRARY_ROUTE },
@@ -153,10 +154,7 @@ const Navbar = () => {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <Avatar
-                                    alt="U"
-                                    src="/static/images/avatar/2.jpg"
-                                />
+                                <AccountCircleOutlined fontSize="large"/>
                             </IconButton>
                         </Tooltip>
                         <Menu
