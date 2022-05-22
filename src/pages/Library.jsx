@@ -22,20 +22,38 @@ const Library = () => {
     const books = useSelector(showBooks)
     const dispatch = useDispatch()
 
-    const [activeBooks, setActiveBooks] = useState([...recommendedBooks])
+    const [searchMode, setSearchMode] = useState(false)
+    const [activeBooks, setActiveBooks] = useState([])
 
     useEffect(() => {
         // fetchBooks().then(data => console.log(data))
-
+        dispatch(getBooksTC())
         // dispatch(getBooksTC())
+        
     }, [])
+
+    useEffect(() => {
+        setActiveBooks([...books])
+    }, [books])
 
     return (
         <div className="flex flex-col  bg-gray-200 py-12 px-4 md:px-14 xl:px-24">
             
-            <Search books={recommendedBooks} activeBooks={activeBooks} setActiveBooks={setActiveBooks} />
+            <Search books={activeBooks} setActiveBooks={setActiveBooks} setSearchMode={setSearchMode}/>
 
-            <Recommended books={activeBooks} />
+            {
+                !searchMode &&
+                <Recommended books={activeBooks} />
+            }
+            {
+                searchMode &&
+                <div className="flex flex-wrap flex-row gap-4 mt-12">
+                    {
+                        activeBooks.map((book, i) => (
+                            <Book key={i} book={book} />
+                        ))}
+                </div>
+            }
 
             {/* <Popular recommendedBooks={recommendedBooks} /> */}
 
