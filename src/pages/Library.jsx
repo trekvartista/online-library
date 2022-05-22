@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getBooks } from "../api/books";
 import Book from "../components/Book/Book";
 import PopularBook from "../components/Book/PopularBook";
 import Search from "../components/Search";
@@ -13,6 +13,10 @@ const Library = () => {
         {id: 3, name: 'O divnyi novyi mir', author: 'Old OS', rating: 4.6, img: "https://upload.wikimedia.org/wikipedia/en/6/62/BraveNewWorld_FirstEdition.jpg"},
         {id: 4, name: '451 Farenheit', author: 'Bradbury', rating: 4.5, img: "https://upload.wikimedia.org/wikipedia/en/d/db/Fahrenheit_451_1st_ed_cover.jpg"},
     ])
+
+    useEffect(() => {
+        getBooks().then(data => console.log(data))
+    }, [])
 
     return (
         <div className="flex flex-col  bg-gray-200 py-12 px-4 md:px-14 xl:px-24">
