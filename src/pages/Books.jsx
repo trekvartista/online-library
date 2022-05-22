@@ -26,7 +26,10 @@ const Books = () => {
                 setActiveBooks={setActiveBooks}
                 setSearchMode={setSearchMode}
             />
-            <div className="flex flex-wrap flex-row gap-4 mt-12">
+            <div className="my-6 font-semibold text-lg text-green-700">
+                {activeBooks.length} book{activeBooks.length === 1 ? "" : "s"} were found
+            </div>
+            <div className="flex flex-wrap flex-row gap-4">
                 {activeBooks?.map((book, i) => (
                     <Book key={i} book={book} />
                 ))}
