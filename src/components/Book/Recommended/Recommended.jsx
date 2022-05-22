@@ -1,5 +1,5 @@
 import React from "react";
-import Book from "./Book";
+import Book from "../Book";
 
 const Recommended = ({books}) => {
     return (
@@ -9,7 +9,7 @@ const Recommended = ({books}) => {
                 <span>Last added</span>
             </div>
             <div className="flex flex-wrap flex-row gap-4">
-                {books.map((book, i) => (
+                {books.slice(0, 9).map((book, i) => (
                     <Book key={i} book={book} />
                 ))}
             </div>
