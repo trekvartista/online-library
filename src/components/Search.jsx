@@ -1,11 +1,14 @@
+import { HighlightOff, Clear } from "@mui/icons-material";
 import {
+    Button,
     FormControl,
     InputLabel,
     MenuItem,
     Select,
     TextField,
+    Tooltip,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Search = ({ books, setActiveBooks, setSearchMode }) => {
     const genres = [
@@ -35,18 +38,39 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
         setFilter(event.target.value);
     };
 
+    const applyFilters = () => {
+        let newBooks;
+
+        newBooks = books.filter((book) => {
+            return (
+                book.title.toLowerCase().includes(searchText.toLowerCase()) &&
+                book.genre.toLowerCase().includes(genre.toLowerCase())
+            );
+        });
+
+        setActiveBooks(newBooks);
+    };
+
+    const resetFilters = () => {
+        setSearchText("");
+        setGenre("");
+        setFilter("");
+    };
+
     const handleSubmit = (e) => {
         if (e.keyCode === 13) {
             e.preventDefault();
 
             setSearchMode(true);
 
-            let newBooks = books.filter((book) =>
-                book.title.toLowerCase().includes(searchText.toLowerCase())
-            );
-            setActiveBooks(newBooks);
+            applyFilters();
         }
     };
+
+    useEffect(() => {
+        setSearchMode(true);
+        applyFilters();
+    }, [genre, filter]);
 
     return (
         <div className="flex flex-row flex-wrap sm:flex-nowrap mx-4 md:mx-14 xl:mx-48 gap-4 items-center ">
@@ -54,6 +78,7 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
                 <TextField
                     className="w-full"
                     variant="outlined"
+                    autoComplete="off"
                     placeholder="Type a book name or author..."
                     value={searchText}
                     onKeyUp={(e) => handleSubmit(e)}
@@ -77,7 +102,7 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
                         </Select>
                     </FormControl>
                 </div>
-                <div className="w-1/2">
+                <div className="w-1/2 mr-4">
                     <FormControl fullWidth size="small">
                         <InputLabel> Genre </InputLabel>
                         <Select
@@ -93,6 +118,15 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
                         </Select>
                     </FormControl>
                 </div>
+                <Tooltip title="Reset the filters">
+                    <Button
+                        variant="outlined"
+                        color="info"
+                        onClick={() => resetFilters()}
+                    >
+                        <Clear />
+                    </Button>
+                </Tooltip>
             </div>
         </div>
     );
