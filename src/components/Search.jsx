@@ -89,7 +89,7 @@ const Search = ({ books, setActiveBooks, setSearchMode }) => {
     };
 
     useEffect(() => {
-        setSearchMode(true);
+        // setSearchMode(true);
         applyFilters();
     }, [genre, filter]);
 

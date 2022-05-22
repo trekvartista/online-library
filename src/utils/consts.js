@@ -2,6 +2,7 @@ export const LIBRARY_ROUTE = "/";
 export const ADMIN_ROUTE = "/admin";
 export const REGISTER_ROUTE = "/register";
 export const LOGIN_ROUTE = "/login";
+export const BOOKS_ROUTE = "/books";
 export const BOOK_ROUTE = "/book";
 // export const WISH_LIST_ROUTE = '/login'
 export const API_URL_ROUTE =

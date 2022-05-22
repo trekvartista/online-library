@@ -11,12 +11,12 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { LIBRARY_ROUTE, ADMIN_ROUTE } from "../utils/consts";
+import { LIBRARY_ROUTE, ADMIN_ROUTE, BOOKS_ROUTE } from "../utils/consts";
 import { NavLink } from "react-router-dom";
 import { AccountCircleOutlined } from "@mui/icons-material";
 
 const pages = [
-    { id: 0, title: "Books", path: LIBRARY_ROUTE },
+    { id: 0, title: "Books", path: BOOKS_ROUTE },
     { id: 1, title: "Pricing", path: "/pricing" },
     { id: 2, title: "Admin", path: ADMIN_ROUTE },
 ];
@@ -51,7 +51,7 @@ const Navbar = () => {
                         component="div"
                         sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
                     >
-                        LIBRARY
+                        <NavLink to={LIBRARY_ROUTE}>LIBRARY</NavLink>
                     </Typography>
 
                     <Box
@@ -116,7 +116,7 @@ const Navbar = () => {
                             display: { xs: "flex", md: "none" },
                         }}
                     >
-                        LIBRARY
+                        <NavLink to={LIBRARY_ROUTE}>LIBRARY</NavLink>
                     </Typography>
                     <Box
                         sx={{
@@ -154,7 +154,7 @@ const Navbar = () => {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <AccountCircleOutlined fontSize="large"/>
+                                <AccountCircleOutlined fontSize="large" />
                             </IconButton>
                         </Tooltip>
                         <Menu
