@@ -1,7 +1,9 @@
+import { AddOutlined } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooksTC, showBooks } from "../../redux/features/booksSlice";
+import AddBook from "./AddBook";
 
 const Books = () => {
     // const books = useSelector(showBooks);
@@ -491,6 +493,10 @@ const Books = () => {
         },
     ];
     const [activeBooks, setActiveBooks] = useState([]);
+    const [addBook, setAddBook] = useState(false);
+
+    const handleBookAddition = () => setAddBook(true);
+    const handleBookAdditionClose = () => setAddBook(false);
 
     // useEffect(() => {
     //     dispatch(getBooksTC());
@@ -502,9 +508,19 @@ const Books = () => {
 
     return (
         <div className="flex flex-col w-full">
-            <span className="m-4  text-2xl font-semibold text-blue-700">
-                Books
-            </span>
+            <div className="flex flex-row items-center justify-between">
+                <span className="m-4  text-2xl font-semibold text-blue-700">
+                    Books
+                </span>
+                <Button variant="outlined" onClick={() => handleBookAddition()}>
+                    <AddOutlined className="mr-1 mb-[2px]" />
+                    Add book
+                </Button>
+
+                {
+                    addBook && <AddBook open={addBook} handleClose={handleBookAdditionClose} />
+                }
+            </div>
             <div className="flex flex-col gap-4  border-t-2 border-t-gray-400">
                 <div className=" flex flex-row mx-4 mt-4 text-sm text-gray-600 ">
                     <div className="w-6/12">Title</div>
@@ -535,12 +551,24 @@ const Books = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="w-1/6"><b>{book.review.slice(0, 3)}</b>/5</div>
-                            <div className="w-1/6 font-semibold text-gray-600">{book.genre}</div>
+                            <div className="w-1/6">
+                                <b>{book.review.slice(0, 3)}</b>/5
+                            </div>
+                            <div className="w-1/6 font-semibold text-gray-600">
+                                {book.genre}
+                            </div>
 
                             <div className="flex flex-col gap-2 ml-auto">
-                                <Button size="small" variant="outlined">Change</Button>
-                                <Button size="small" variant="contained" color="error">Remove</Button>
+                                <Button size="small" variant="outlined">
+                                    Change
+                                </Button>
+                                <Button
+                                    size="small"
+                                    variant="contained"
+                                    color="error"
+                                >
+                                    Remove
+                                </Button>
                             </div>
                         </div>
                     ))}
