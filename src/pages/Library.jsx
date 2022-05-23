@@ -24,6 +24,7 @@ const Library = () => {
 
     useEffect(() => {
         setActiveBooks([...books]);
+        localStorage.setItem("books", JSON.stringify(books))
     }, [books]);
 
     useEffect(() => {
