@@ -1,18 +1,8 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import {
-    TextField,
-    Button,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-} from "@mui/material";
-import { useState } from "react";
+import { Box, Typography, Modal, TextField, Button, FormControl, InputLabel, Select, MenuItem} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
 
-const AddBook = ({ open, handleClose }) => {
+const AddBook = ({ open, handleClose, setAddBookAlert }) => {
     const genres = [
         "Literary Fiction",
         "Mystery",
@@ -27,16 +17,16 @@ const AddBook = ({ open, handleClose }) => {
         "Biograpgy",
     ];
 
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [genre, setGenre] = useState("");
-    const [description, setDescription] = useState("");
-    const [file, setFile] = useState("");
-
     const { control, register, handleSubmit, formState: { errors } } = useForm();
+
     const onSubmit = (data) => {
-        console.log(data);
         
+        let books = JSON.parse(localStorage.getItem("books"))
+        books.unshift(data)
+        
+        localStorage.setItem("books", JSON.stringify(books))
+        handleClose();
+        setAddBookAlert(true);
     }
     return (
         <div>
@@ -70,6 +60,7 @@ const AddBook = ({ open, handleClose }) => {
                                     <TextField
                                         variant="outlined"
                                         placeholder="Book title..."
+                                        autoComplete="off"
                                         error={errors?.title ? true : false}
                                         // helperText="This field is required."
                                         value={value}
@@ -89,6 +80,7 @@ const AddBook = ({ open, handleClose }) => {
                                     <TextField
                                         variant="outlined"
                                         placeholder="Book author..."
+                                        autoComplete="off"
                                         error={errors?.author ? true : false}
                                         value={value}
                                         onChange={onChange}
@@ -116,7 +108,7 @@ const AddBook = ({ open, handleClose }) => {
                                             value={value}
                                             label="__________"
                                             onChange={onChange}
-                                            {...register("genre", { required: false })}
+                                            {...register("genre", { required: true })}
                                         >
                                             {genres.map((item, i) => (
                                                 <MenuItem key={i} value={item}>
@@ -128,6 +120,8 @@ const AddBook = ({ open, handleClose }) => {
                                 />
                             </FormControl>
 
+                            {errors?.genre?.type === "required" && <p className="text-red-600">This field is required.</p>}
+
                             <Controller
                                 name="description"
                                 defaultValue=""
@@ -137,6 +131,7 @@ const AddBook = ({ open, handleClose }) => {
                                         multiline
                                         variant="outlined"
                                         placeholder="Book description..."
+                                        autoComplete="off"
                                         error={errors?.description ? true : false}
                                         className="my-3"
                                         value={value}
