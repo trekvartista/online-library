@@ -11,13 +11,13 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { LIBRARY_ROUTE, ADMIN_ROUTE, BOOKS_ROUTE } from "../utils/consts";
+import { LIBRARY_ROUTE, ADMIN_ROUTE, BOOKS_ROUTE, WISH_LIST_ROUTE } from "../utils/consts";
 import { NavLink } from "react-router-dom";
 import { AccountCircleOutlined } from "@mui/icons-material";
 
 const pages = [
     { id: 0, title: "Books", path: BOOKS_ROUTE },
-    { id: 1, title: "Pricing", path: "/pricing" },
+    { id: 1, title: "Wish List", path: WISH_LIST_ROUTE },
     { id: 2, title: "Admin", path: ADMIN_ROUTE },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
