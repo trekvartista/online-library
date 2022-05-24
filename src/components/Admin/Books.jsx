@@ -534,9 +534,9 @@ const Books = () => {
 
     useEffect(() => {
         const books = JSON.parse(localStorage.getItem("books"));
-        console.log(books);
+        // console.log(books);
 
-        // console.log(localStorage);
+        console.log(localStorage);
         setActiveBooks([...books]);
     }, []);
 
