@@ -21,7 +21,7 @@ const Book = ({ book }) => {
                 <div className="flex flex-row items-center gap-1 mt-auto ml-auto text-gray-500">
                     <StarBorder fontSize="small" />
                     <span className="text-gray-500">
-                        <b className="text-black">{book.review.slice(0, 3)}</b>
+                        <b className="text-black">{book.review?.slice(0, 3)}</b>
                         /5
                     </span>
                 </div>

@@ -14,9 +14,26 @@ const Books = () => {
     useEffect(() => {
         dispatch(getBooksTC());
     }, []);
-
+    
     useEffect(() => {
         setActiveBooks([...books]);
+
+        const ls_books = JSON.parse(localStorage.getItem("books")) || [];
+        // console.log(ls_books)
+
+        books.forEach( book => {
+            
+            let index = ls_books?.findIndex( ls_book => ls_book.title === book.title )
+            // console.log(index)
+            
+            if (index === -1) {
+                ls_books.push(book)
+            }
+        })
+
+        localStorage.setItem("books", JSON.stringify(ls_books))
+        setActiveBooks([...ls_books])
+
     }, [books]);
 
     return (

@@ -21,10 +21,26 @@ const Library = () => {
     useEffect(() => {
         dispatch(getBooksTC());
     }, []);
-
+    
     useEffect(() => {
         setActiveBooks([...books]);
-        // localStorage.setItem("books", JSON.stringify(books))
+
+        const ls_books = JSON.parse(localStorage.getItem("books")) || [];
+        // console.log(ls_books)
+
+        books.forEach( book => {
+            
+            let index = ls_books?.findIndex( ls_book => ls_book.title === book.title )
+            // console.log(index)
+            
+            if (index === -1) {
+                ls_books.push(book)
+            }
+        })
+
+        localStorage.setItem("books", JSON.stringify(ls_books))
+        setActiveBooks([...ls_books])
+
     }, [books]);
 
     useEffect(() => {
@@ -36,14 +52,14 @@ const Library = () => {
     return (
         <div className="flex flex-col  bg-gray-200 py-12 px-4 md:px-14 xl:px-24">
             <Search
-                books={books}
+                books={activeBooks}
                 setActiveBooks={setActiveBooks}
                 setSearchMode={setSearchMode}
             />
 
             <div>
-                <Recommended books={books} />
-                <Popular books={books} />
+                <Recommended books={activeBooks} />
+                <Popular books={activeBooks} />
             </div>
         </div>
     );

@@ -19,7 +19,8 @@ const style = {
 };
 
 const Books = () => {
-    // const books = useSelector(showBooks);
+
+    const books = useSelector(showBooks);
     const dispatch = useDispatch();
 
     const static_books = [
@@ -547,18 +548,33 @@ const Books = () => {
         setRemoveAlert(false);
     };
 
-    useEffect(() => {
-        const books = JSON.parse(localStorage.getItem("books"));
-        // console.log(books);
 
+    useEffect(() => {
+        dispatch(getBooksTC());
         // console.log(localStorage);
-
-        setActiveBooks([...books]);
     }, []);
-
+    
     useEffect(() => {
-        // console.log(changedBook)
-    }, [changedBook]);
+        setActiveBooks([...books]);
+
+        const ls_books = JSON.parse(localStorage.getItem("books")) || [];
+        // console.log(ls_books)
+
+        books.forEach( book => {
+
+            
+            let index = ls_books?.findIndex( ls_book => ls_book.title === book.title )
+            // console.log(index)
+            
+            if (index === -1) {
+                ls_books.push(book)
+            }
+        })
+
+        localStorage.setItem("books", JSON.stringify(ls_books))
+        setActiveBooks([...ls_books])
+
+    }, [books]);
 
     const changeBook = () => {};
     const removeBook = (title) => {
@@ -571,13 +587,7 @@ const Books = () => {
         setRemoveAlert(true);
     };
 
-    // useEffect(() => {
-    //     dispatch(getBooksTC());
-    // }, []);
 
-    // useEffect(() => {
-    //     setActiveBooks([...books]);
-    // }, [books]);
 
     return (
         <div className="flex flex-col w-full">
