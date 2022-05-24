@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooksTC, showBooks } from "../../redux/features/booksSlice";
 import AddBook from "./AddBook";
+import ChangeBook from "./ChangeBook";
 
 const style = {
     position: "absolute",
@@ -508,6 +509,10 @@ const Books = () => {
     const [isAddBook, setAddBook] = useState(false);
     const [addBookAlert, setAddBookAlert] = useState(false);
 
+    const [isChangeBook, setChangeBook] = useState(false);
+    const [changedBook, setChangedBook] = useState({});
+    const [changeBookAlert, setChangeBookAlert] = useState(false);
+
     const [isRemoveBook, setRemoveBook] = useState(false);
     const [removeBookTitle, setRemoveBookTitle] = useState("");
     const [removeAlert, setRemoveAlert] = useState(false);
@@ -515,8 +520,25 @@ const Books = () => {
     const handleBookAddition = () => setAddBook(true);
     const handleBookAdditionClose = () => setAddBook(false);
 
+    const handleBookChange = () => setChangeBook(true);
+    const handleBookChangeClose = () => setChangeBook(false);
+
     const handleBookDeletion = () => setRemoveBook(true);
     const handleBookDeletionClose = () => setRemoveBook(false);
+
+    const handleAddBookAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAddBookAlert(false);
+    };
+
+    const handleChangeBookAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setChangeBookAlert(false);
+    };
 
     const handleRemoveAlertClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -525,23 +547,21 @@ const Books = () => {
         setRemoveAlert(false);
     };
 
-    const handleAddBookAlertClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setAddBookAlert(false)
-    }
-
     useEffect(() => {
         const books = JSON.parse(localStorage.getItem("books"));
         // console.log(books);
 
-        console.log(localStorage);
+        // console.log(localStorage);
+
         setActiveBooks([...books]);
     }, []);
 
-    const handleChangeBook = () => {};
-    const handleRemoveBook = (title) => {
+    useEffect(() => {
+        // console.log(changedBook)
+    }, [changedBook]);
+
+    const changeBook = () => {};
+    const removeBook = (title) => {
         let books = JSON.parse(localStorage.getItem("books"));
         books = books.filter((book) => book.title !== title);
         localStorage.setItem("books", JSON.stringify(books));
@@ -561,40 +581,79 @@ const Books = () => {
 
     return (
         <div className="flex flex-col w-full">
-            <AddBook open={isAddBook} handleClose={handleBookAdditionClose} setAddBookAlert={setAddBookAlert} />
-            <Modal
-                open={isRemoveBook}
-                onClose={handleBookDeletionClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[600px] lg:w-[800px] border-2 bg-white border-black shadow-xl p-4">
-                    <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                    >
-                        Are you sure?
-                    </Typography>
-                    <Box className="flex flex-row gap-2 max-w-[150px] mt-4 ml-auto">
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => handleRemoveBook(removeBookTitle)}
+            {
+                // the little construction below forces ChangeBook modal to rerender. That helps a little
+            }
+            {isAddBook && (
+                <AddBook
+                    open={isAddBook}
+                    handleClose={handleBookAdditionClose}
+                    setAddBookAlert={setAddBookAlert}
+                />
+            )}
+            {isChangeBook && (
+                <ChangeBook
+                    changedBook={changedBook}
+                    open={isChangeBook}
+                    handleClose={handleBookChangeClose}
+                    setChangeBookAlert={setChangeBookAlert}
+                />
+            )}
+
+            {isRemoveBook && (
+                <Modal
+                    open={isRemoveBook}
+                    onClose={handleBookDeletionClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[600px] lg:w-[800px] border-2 bg-white border-black shadow-xl p-4">
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
                         >
-                            Remove
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="info"
-                            onClick={() => handleBookDeletionClose()}
-                        >
-                            Cancel
-                        </Button>
+                            Are you sure?
+                        </Typography>
+                        <Box className="flex flex-row gap-2 max-w-[150px] mt-4 ml-auto">
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => removeBook(removeBookTitle)}
+                            >
+                                Remove
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="info"
+                                onClick={() => handleBookDeletionClose()}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            </Modal>
-            <Snackbar open={removeAlert} autoHideDuration={5000} onClose={handleRemoveAlertClose}>
+                </Modal>
+            )}
+
+            <Snackbar
+                open={addBookAlert}
+                autoHideDuration={5000}
+                onClose={handleAddBookAlertClose}
+            >
+                <Alert
+                    onClose={handleAddBookAlertClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    You've added the book! Refresh the page to see the changes.
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={removeAlert}
+                autoHideDuration={5000}
+                onClose={handleRemoveAlertClose}
+            >
                 <Alert
                     onClose={handleRemoveAlertClose}
                     severity="warning"
@@ -604,14 +663,18 @@ const Books = () => {
                     You've removed the book!
                 </Alert>
             </Snackbar>
-            <Snackbar open={addBookAlert} autoHideDuration={5000} onClose={handleAddBookAlertClose}>
+            <Snackbar
+                open={changeBookAlert}
+                autoHideDuration={5000}
+                onClose={handleChangeBookAlertClose}
+            >
                 <Alert
-                    onClose={handleAddBookAlertClose}
+                    onClose={handleChangeBookAlertClose}
                     severity="success"
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
-                    You've added the book! Refresh the page to see the changes.
+                    You've changed the book!
                 </Alert>
             </Snackbar>
 
@@ -662,7 +725,15 @@ const Books = () => {
                             </div>
 
                             <div className="flex flex-col gap-2 ml-auto">
-                                <Button size="small" variant="outlined">
+                                <Button
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={() => {
+                                        // console.log(book)
+                                        setChangedBook({ ...book });
+                                        handleBookChange();
+                                    }}
+                                >
                                     Change
                                 </Button>
                                 <Button

@@ -1,8 +1,8 @@
 import { Box, Typography, Modal, TextField, Button, FormControl, InputLabel, Select, MenuItem} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const AddBook = ({ open, handleClose, setAddBookAlert }) => {
+const ChangeBook = ({ changedBook, open, handleClose, setChangeBookAlert }) => {
     const genres = [
         "Literary Fiction",
         "Mystery",
@@ -22,11 +22,24 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
     const onSubmit = (data) => {
         
         let books = JSON.parse(localStorage.getItem("books"))
-        books.unshift(data)
+        
+        let bookIndex = books.findIndex( book => book.title === changedBook.title )
+
+        for (const [key, value] of Object.entries(books[bookIndex])) {
+            console.log(value)
+            if (value !== data[key]) {
+                console.log('old', books[bookIndex][key]);
+                books[bookIndex][key] = data[key]
+                console.log('new', books[bookIndex][key]);
+            }
+        }
+        // console.log(data)
+        // console.log(books[bookIndex])
+        
         
         localStorage.setItem("books", JSON.stringify(books))
         handleClose();
-        setAddBookAlert(true);
+        setChangeBookAlert(true);
     }
     return (
         <div>
@@ -43,7 +56,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
                         variant="h6"
                         component="h2"
                     >
-                        Add a new book!
+                        Book changing...
                     </Typography>
 
                     <Box>
@@ -54,7 +67,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
                         >
                             <Controller
                                 name="title"
-                                defaultValue=""
+                                defaultValue={changedBook.title}
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -74,7 +87,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
 
                             <Controller
                                 name="author"
-                                defaultValue=""
+                                defaultValue={changedBook.author}
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -97,7 +110,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
                                 </InputLabel>
                                 <Controller
                                     name="genre"
-                                    defaultValue=""
+                                    defaultValue={changedBook.genre}
                                     control={control}
                                     render={({
                                         field: { onChange, value },
@@ -124,7 +137,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
 
                             <Controller
                                 name="description"
-                                defaultValue=""
+                                defaultValue={changedBook.description}
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -145,7 +158,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
 
                             <Controller
                                 name="imgUrl"
-                                defaultValue=""
+                                defaultValue={changedBook.imgUrl}
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -176,7 +189,7 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
                                     onClick={handleSubmit(onSubmit)}
                                     type="submit"
                                 >
-                                    Add
+                                    Change
                                 </Button>
                                 <Button
                                     variant="contained"
@@ -194,4 +207,4 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
     );
 };
 
-export default AddBook;
+export default ChangeBook;
