@@ -1,6 +1,5 @@
 import { Box, Typography, Modal, TextField, Button, FormControl, InputLabel, Select, MenuItem} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
 
 const AddBook = ({ open, handleClose, setAddBookAlert }) => {
     const genres = [

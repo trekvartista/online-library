@@ -17,13 +17,8 @@ export const booksSlice = createSlice({
 });
 
 export const getBooksTC = () => (dispatch) => {
-    // listBooks().then((data) => {
-    //     console.log(data)
-    //     dispatch(getBooks(data));
-    // });
-
+    
     fetchBooks().then(data => {
-        // console.log(Object.values(data))
         dispatch(getBooks(Object.values(data)))
     })
 };

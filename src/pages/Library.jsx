@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Book from "../components/Book/Book";
 import Popular from "../components/Book/Popular/Popular";
 import Recommended from "../components/Book/Recommended/Recommended";
-import Books from "./Books";
 import Search from "../components/Search";
 import { getBooksTC, showBooks } from "../redux/features/booksSlice";
 import {useNavigate} from 'react-router-dom';

@@ -1,4 +1,4 @@
-import { HighlightOff, Clear } from "@mui/icons-material";
+import { Clear } from "@mui/icons-material";
 import {
     Button,
     FormControl,
