@@ -20,13 +20,25 @@ const AddBook = ({ open, handleClose, setAddBookAlert }) => {
 
     const onSubmit = (data) => {
         
+        let book = {...data};
+        let usedIds = []
         let books = JSON.parse(localStorage.getItem("books"))
-        books.unshift(data)
+        books.forEach(b => usedIds.push(b.id))
         
-        localStorage.setItem("books", JSON.stringify(books))
+        const max = 4096, min = 64;
+        let randomId = Math.floor(Math.random() * (max - min + 1)) + min;
+        while (usedIds.includes(randomId)) {
+            randomId = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        book.id = randomId;
+        books.unshift(book);
+        localStorage.setItem("books", JSON.stringify(books));
+
         handleClose();
         setAddBookAlert(true);
     }
+
     return (
         <div>
             <Modal
